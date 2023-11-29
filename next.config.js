@@ -3,6 +3,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-}
+  basePath: "/Nazarii98/Next-Supabase",
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
