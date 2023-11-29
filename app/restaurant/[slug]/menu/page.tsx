@@ -5,20 +5,25 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const fetchRestaurantMenu = async (slug: string) => {
-  const restaurant = await prisma.restaurant.findUnique({
-    where: {
-      slug,
-    },
-    select: {
-      Items: true,
-    },
-  });
+  try {
+    const restaurant = await prisma.restaurant.findUnique({
+      where: {
+        slug,
+      },
+      select: {
+        Items: true,
+      },
+    });
 
-  if (!restaurant) {
-    throw new Error();
+    if (!restaurant) {
+      throw new Error(`Restaurant not found for slug: ${slug}`);
+    }
+
+    return restaurant.Items || [];
+  } catch (error) {
+    console.error(`Error fetching restaurant menu for slug ${slug}:`, error);
+    throw error;
   }
-
-  return restaurant.Items;
 };
 
 export default async function RestaurantMenu({
@@ -27,6 +32,8 @@ export default async function RestaurantMenu({
   params: { slug: string };
 }) {
   const menu = await fetchRestaurantMenu(params.slug);
+  console.log(menu);
+
   return (
     <>
       <div className="bg-white w-[100%] rounded p-3 shadow">
