@@ -6,9 +6,12 @@ const prisma = new PrismaClient();
 
 const fetchRestaurantMenu = async (slug: string) => {
   try {
+    // Decode the slug
+    const decodedSlug = decodeURIComponent(slug);
+
     const restaurant = await prisma.restaurant.findUnique({
       where: {
-        slug,
+        slug: decodedSlug,
       },
       select: {
         Items: true,
@@ -16,7 +19,7 @@ const fetchRestaurantMenu = async (slug: string) => {
     });
 
     if (!restaurant) {
-      throw new Error(`Restaurant not found for slug: ${slug}`);
+      throw new Error(`Restaurant not found for slug: ${decodedSlug}`);
     }
 
     return restaurant.Items || [];
