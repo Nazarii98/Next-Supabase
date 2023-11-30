@@ -34,7 +34,13 @@ const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
   });
 
   if (!restaurant) {
-    throw new Error();
+    return {
+      id: 0,
+      name: "string",
+      images: [""],
+      description: "",
+      slug: "",
+    };
   }
 
   return restaurant;
@@ -47,17 +53,18 @@ export default async function RestaurantDetails({
 }) {
   const restaurant = await fetchRestaurantBySlug(params.slug);
 
-  console.log(restaurant);
   return (
     <>
-      <div className="bg-white w-[70%] rounded p-3 shadow">
-        <RestaurantNavBar slug={restaurant.slug} />
-        <Title name={restaurant.name} />
-        <Raiting />
-        <Description description={restaurant.description} />
-        <Images images={restaurant.images} />
-        <Reviews />
-      </div>
+      {restaurant && (
+        <div className="bg-white w-[70%] rounded p-3 shadow">
+          <RestaurantNavBar slug={restaurant.slug} />
+          <Title name={restaurant.name} />
+          <Raiting />
+          <Description description={restaurant.description} />
+          <Images images={restaurant.images} />
+          <Reviews />
+        </div>
+      )}
       <div className="w-[27%] relative text-reg">
         <ReservationCard />
       </div>

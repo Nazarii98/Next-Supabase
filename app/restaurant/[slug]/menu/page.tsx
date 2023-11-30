@@ -15,7 +15,7 @@ const fetchRestaurantMenu = async (slug: string) => {
   });
 
   if (!restaurant) {
-    throw new Error();
+    return [];
   }
 
   return restaurant.Items;
@@ -31,7 +31,7 @@ export default async function RestaurantMenu({
     <>
       <div className="bg-white w-[100%] rounded p-3 shadow">
         <RestaurantNavBar slug={params.slug} />
-        <Menu menu={menu} />
+        {menu && <Menu menu={menu} />}
       </div>
     </>
   );
